@@ -43,7 +43,7 @@ def use_motorista_controller(api: Api):
             return novo_motorista, 201
 
     @module.route('/<string:cpf>')
-    class UserOnly(Resource):
+    class MotoristaOnly(Resource):
         @jwt_required(locations=['headers'])
         @module.doc(security='jwt')
         def get(self, cpf):
