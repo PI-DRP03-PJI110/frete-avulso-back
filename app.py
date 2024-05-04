@@ -7,6 +7,7 @@ from flask_jwt_extended import JWTManager
 from modules.login.moduloUsuario import use_user_controller
 from modules.login.moduloLogin import use_login_controller
 from modules.motorista.moduloMotorista import use_motorista_controller
+from modules.veiculo.moduloVeiculo import use_veiculo_controller
 
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = 'PI-DRP03-PJI110'  # Mantenha isso seguro na produção
@@ -25,7 +26,8 @@ def handle_custom_exception(error):
 use_login_controller(api)
 use_user_controller(api)
 use_motorista_controller(api)
+use_veiculo_controller(api)
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
