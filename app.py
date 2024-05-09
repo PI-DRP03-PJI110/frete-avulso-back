@@ -31,5 +31,10 @@ use_veiculo_controller(api)
 use_viagem_controller(api)
 
 
+def run():
+    from waitress import serve
+    serve(app)
+
+
 if __name__ == '__main__':
     app.run(debug=False)
