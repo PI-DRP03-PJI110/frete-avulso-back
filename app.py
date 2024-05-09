@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_restx import Api
+from flask_cors import CORS
 from jwt import ExpiredSignatureError
 from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_jwt_extended import JWTManager
@@ -13,6 +14,8 @@ from modules.viagem.moduloViagem import use_viagem_controller
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = 'PI-DRP03-PJI110'  # Mantenha isso seguro na produção
 app.wsgi_app = ProxyFix(app.wsgi_app)
+
+CORS(app)
 
 api = Api(app, doc="/", title='Api frete avulso', description='Api para o projeto PI da univesp')
 jwt = JWTManager(app)
