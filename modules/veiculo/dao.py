@@ -1,12 +1,6 @@
-import mysql.connector
+from config.database import get_connection
 
-# Configurações do banco de dados
-db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="univesp547",
-    database="viagens_avulsas"
-)
+db = get_connection()
 
 cursor = db.cursor(dictionary=True)
 
