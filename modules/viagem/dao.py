@@ -1,24 +1,32 @@
 from config.database import get_connection
 
-db = get_connection()
-
-cursor = db.cursor(dictionary=True)
 
 
 def get_all_viagens():
     try:
-        # Exibir todos os registros do banco de dados
+        db = get_connection()
+        cursor = db.cursor(dictionary=True)
 
+        # Exibir todos os registros do banco de dados
         cursor.execute(
             "SELECT ID_viagem as id, origem, destino, valor, NF as nf, data_viagem, carga, despesa, placa, CPF_moto as cpf_motorista, CPF_user as cpf_usuario FROM viagens")
         return cursor.fetchall()
     except Exception as e:
         print(e)
         return None
+    finally:
+        # Fechar o cursor e a conexão de forma segura
+        if 'cursor' in locals() and cursor is not None:
+            cursor.close()
+        if 'db' in locals() and db is not None:
+            db.close()
 
 
 def get_viagem(id: int):
     try:
+        db = get_connection()
+        cursor = db.cursor(dictionary=True)
+
         # Exibir todos os registros do banco de dados
         cursor.execute(
             "SELECT ID_viagem as id, origem, destino, valor, NF as nf, data_viagem, carga, despesa, placa, CPF_moto as cpf_motorista, CPF_user as cpf_usuario FROM viagens where ID_viagem = %s",
@@ -27,10 +35,19 @@ def get_viagem(id: int):
     except Exception as e:
         print(e)
         return None
+    finally:
+        # Fechar o cursor e a conexão de forma segura
+        if 'cursor' in locals() and cursor is not None:
+            cursor.close()
+        if 'db' in locals() and db is not None:
+            db.close()
 
 
 def add_viagem(origem, destino, valor, NF, data_viagem, carga, despesa, placa, cpf_motorista, cpf_usuario):
     try:
+        db = get_connection()
+        cursor = db.cursor(dictionary=True)
+
         cursor.execute(
             "INSERT INTO viagens (origem, destino, NF, data_viagem, carga, despesa, placa, CPF_moto, CPF_user, valor) "+
             " VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
@@ -41,10 +58,19 @@ def add_viagem(origem, destino, valor, NF, data_viagem, carga, despesa, placa, c
     except Exception as e:
         print(e)
         return None
+    finally:
+        # Fechar o cursor e a conexão de forma segura
+        if 'cursor' in locals() and cursor is not None:
+            cursor.close()
+        if 'db' in locals() and db is not None:
+            db.close()
 
 
 def update_viagem(id, origem, destino, valor, NF, data_viagem, carga, despesa, placa, cpf_motorista, cpf_usuario):
     try:
+        db = get_connection()
+        cursor = db.cursor(dictionary=True)
+
         # Atualize o registro no banco de dados
         cursor.execute(
             "UPDATE viagens SET origem = %s, destino = %s, NF = %s, data_viagem = %s, carga = %s, despesa = %s, placa = %s, CPF_moto = %s, CPF_user = %s, valor = %s WHERE ID_viagem = %s ",
@@ -56,3 +82,10 @@ def update_viagem(id, origem, destino, valor, NF, data_viagem, carga, despesa, p
     except Exception as e:
         print(e)
         return False
+
+    finally:
+        # Fechar o cursor e a conexão de forma segura
+        if 'cursor' in locals() and cursor is not None:
+            cursor.close()
+        if 'db' in locals() and db is not None:
+            db.close()
