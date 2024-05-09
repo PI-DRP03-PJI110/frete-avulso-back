@@ -1,0 +1,14 @@
+# Arquivos temporários
+.dockerignore
+.DS_Store
+.vscode/
+.idea/
+*.iml
+.idea/
+
+__pycache__/
+
+data/
+
+# Pastas de IDEs da JetBrains
+.idea/
