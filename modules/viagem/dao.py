@@ -9,7 +9,7 @@ def get_all_viagens():
 
         # Exibir todos os registros do banco de dados
         cursor.execute(
-            "SELECT ID_viagem as id, origem, destino, valor, NF as nf, data_viagem, carga, despesa, placa, CPF_moto as cpf_motorista, CPF_user as cpf_usuario FROM viagens")
+            "SELECT ID_viagem as id, solicitante, origem, destino, valor, NF as nf, data_viagem, carga, despesa, placa, CPF_moto as cpf_motorista, CPF_user as cpf_usuario FROM viagens")
         return cursor.fetchall()
     except Exception as e:
         print(e)
@@ -29,7 +29,7 @@ def get_viagem(id: int):
 
         # Exibir todos os registros do banco de dados
         cursor.execute(
-            "SELECT ID_viagem as id, origem, destino, valor, NF as nf, data_viagem, carga, despesa, placa, CPF_moto as cpf_motorista, CPF_user as cpf_usuario FROM viagens where ID_viagem = %s",
+            "SELECT ID_viagem as id, solicitante, origem, destino, valor, NF as nf, data_viagem, carga, despesa, placa, CPF_moto as cpf_motorista, CPF_user as cpf_usuario FROM viagens where ID_viagem = %s",
             (id,))
         return cursor.fetchone()
     except Exception as e:
@@ -43,15 +43,15 @@ def get_viagem(id: int):
             db.close()
 
 
-def add_viagem(origem, destino, valor, NF, data_viagem, carga, despesa, placa, cpf_motorista, cpf_usuario):
+def add_viagem(solicitante, origem, destino, valor, NF, data_viagem, carga, despesa, placa, cpf_motorista, cpf_usuario):
     try:
         db = get_connection()
         cursor = db.cursor(dictionary=True)
 
         cursor.execute(
-            "INSERT INTO viagens (origem, destino, NF, data_viagem, carga, despesa, placa, CPF_moto, CPF_user, valor) "+
-            " VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-            (origem, destino, NF, data_viagem, carga, despesa, placa, cpf_motorista, cpf_usuario, valor))
+            "INSERT INTO viagens (solicitante, origem, destino, NF, data_viagem, carga, despesa, placa, CPF_moto, CPF_user, valor) "+
+            " VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+            (solicitante, origem, destino, NF, data_viagem, carga, despesa, placa, cpf_motorista, cpf_usuario, valor))
         db.commit()
         return True
 
@@ -66,15 +66,15 @@ def add_viagem(origem, destino, valor, NF, data_viagem, carga, despesa, placa, c
             db.close()
 
 
-def update_viagem(id, origem, destino, valor, NF, data_viagem, carga, despesa, placa, cpf_motorista, cpf_usuario):
+def update_viagem(id, solicitante, origem, destino, valor, NF, data_viagem, carga, despesa, placa, cpf_motorista, cpf_usuario):
     try:
         db = get_connection()
         cursor = db.cursor(dictionary=True)
 
         # Atualize o registro no banco de dados
         cursor.execute(
-            "UPDATE viagens SET origem = %s, destino = %s, NF = %s, data_viagem = %s, carga = %s, despesa = %s, placa = %s, CPF_moto = %s, CPF_user = %s, valor = %s WHERE ID_viagem = %s ",
-            (origem, destino, NF, data_viagem, carga, despesa, placa, cpf_motorista, cpf_usuario, valor, id)
+            "UPDATE viagens SET solicitante = %s, origem = %s, destino = %s, NF = %s, data_viagem = %s, carga = %s, despesa = %s, placa = %s, CPF_moto = %s, CPF_user = %s, valor = %s WHERE ID_viagem = %s ",
+            (solicitante, origem, destino, NF, data_viagem, carga, despesa, placa, cpf_motorista, cpf_usuario, valor, id)
         )
         db.commit()
         return True

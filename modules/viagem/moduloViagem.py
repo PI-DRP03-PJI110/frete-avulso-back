@@ -22,6 +22,7 @@ def use_viagem_controller(api: Api):
     module = api.namespace('viagem', authorizations=auth_schema)
     viagem_model = api.model('Viagem', {
         'id': fields.Integer(required=False),
+        'solicitante': fields.String(required=False),
         'origem': fields.String(required=True),
         'destino': fields.String(required=True),
         'placa': fields.String(required=True),
@@ -51,6 +52,7 @@ def use_viagem_controller(api: Api):
         @module.doc(security='jwt')
         @module.expect(viagem_model)
         def post(self):
+            solicitante = api.payload.get('solicitante', None)
             origem = api.payload.get('origem', None)
             destino = api.payload.get('destino', None)
             placa = api.payload.get('placa', None)
@@ -75,7 +77,7 @@ def use_viagem_controller(api: Api):
 
             cpf_user = get_jwt_identity()
 
-            nova_viagem = add_viagem(origem=origem, destino=destino, valor=valor, NF=nf, data_viagem=data_viagem,
+            nova_viagem = add_viagem(solicitante=solicitante, origem=origem, destino=destino, valor=valor, NF=nf, data_viagem=data_viagem,
                                      carga=carga, despesa=despesa, placa=placa, cpf_motorista=cpf_motorista,
                                      cpf_usuario=cpf_user)
 
@@ -100,6 +102,7 @@ def use_viagem_controller(api: Api):
         @module.expect(viagem_model)
         def put(self, id):
             origem = api.payload.get('origem', None)
+            solicitante = api.payload.get('solicitante', None)
             destino = api.payload.get('destino', None)
             placa = api.payload.get('placa', None)
             data_viagem = api.payload.get('data_viagem', None)
@@ -111,6 +114,9 @@ def use_viagem_controller(api: Api):
 
             old_viagem = get_viagem(id)
             cpf_usuario = old_viagem['cpf_usuario']
+
+            if not solicitante:
+                solicitante = old_viagem['solicitante']
 
             if not origem:
                 origem = old_viagem['origem']
@@ -136,7 +142,7 @@ def use_viagem_controller(api: Api):
             if not despesa:
                 despesa = old_viagem['despesa']
 
-            sucesso = update_viagem(id=id, origem=origem, destino=destino, valor=valor, NF=nf, data_viagem=data_viagem,
+            sucesso = update_viagem(id=id, solicitante=solicitante, origem=origem, destino=destino, valor=valor, NF=nf, data_viagem=data_viagem,
                                     carga=carga, despesa=despesa, placa=placa, cpf_motorista=cpf_motorista,
                                     cpf_usuario=cpf_usuario)
 
@@ -147,7 +153,6 @@ def use_viagem_controller(api: Api):
 
         @jwt_required(locations=['headers'])
         @module.doc(security='jwt')
-        @module.expect(viagem_model)
         def delete(self, id):
 
             sucesso = excluir_viagem(id=id)
