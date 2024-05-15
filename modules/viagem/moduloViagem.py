@@ -5,7 +5,7 @@ import simplejson as json
 from flask_restx import Api, Resource, fields, marshal
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-from modules.viagem.dao import get_viagem, add_viagem, update_viagem, get_all_viagens
+from modules.viagem.dao import get_viagem, add_viagem, update_viagem, get_all_viagens, excluir_viagem
 
 
 class Encoder(json.JSONEncoder):
@@ -139,6 +139,18 @@ def use_viagem_controller(api: Api):
             sucesso = update_viagem(id=id, origem=origem, destino=destino, valor=valor, NF=nf, data_viagem=data_viagem,
                                     carga=carga, despesa=despesa, placa=placa, cpf_motorista=cpf_motorista,
                                     cpf_usuario=cpf_usuario)
+
+            if sucesso is False:
+                return None, 500
+
+            return {}, 200
+
+        @jwt_required(locations=['headers'])
+        @module.doc(security='jwt')
+        @module.expect(viagem_model)
+        def delete(self, id):
+
+            sucesso = excluir_viagem(id=id)
 
             if sucesso is False:
                 return None, 500

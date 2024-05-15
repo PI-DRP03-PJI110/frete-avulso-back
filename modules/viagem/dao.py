@@ -89,3 +89,25 @@ def update_viagem(id, origem, destino, valor, NF, data_viagem, carga, despesa, p
             cursor.close()
         if 'db' in locals() and db is not None:
             db.close()
+
+
+def excluir_viagem(id):
+    try:
+        db = get_connection()
+        cursor = db.cursor(dictionary=True)
+
+        # Atualize o registro no banco de dados
+        cursor.execute("DELETE FROM viagens  WHERE ID_viagem = %s ", (id,))
+        db.commit()
+        return True
+
+    except Exception as e:
+        print(e)
+        return False
+
+    finally:
+        # Fechar o cursor e a conexão de forma segura
+        if 'cursor' in locals() and cursor is not None:
+            cursor.close()
+        if 'db' in locals() and db is not None:
+            db.close()
