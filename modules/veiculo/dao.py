@@ -44,7 +44,7 @@ def add_veiculo(placa, descricao, cpf_motorista: None):
         db = get_connection()
         cursor = db.cursor(dictionary=True)
 
-        if cpf_motorista is None:
+        if not cpf_motorista:
             cursor.execute("INSERT INTO veiculo (placa, ID_veiculo) VALUES (%s, %s)", (placa, descricao))
         else:
             cursor.execute("INSERT INTO veiculo (placa, ID_veiculo, CPF_moto) VALUES (%s, %s, %s)",

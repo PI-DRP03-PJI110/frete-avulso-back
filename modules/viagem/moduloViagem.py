@@ -61,16 +61,16 @@ def use_viagem_controller(api: Api):
             nf = api.payload.get('nf', None)
             despesa = api.payload.get('despesa', None)
 
-            if origem is None or destino is None:
+            if not origem or not destino:
                 return {'message': 'A origem e destino da viagem são obrigatórios'}, 400
 
-            if placa is None or cpf_motorista is None:
+            if not placa or not cpf_motorista:
                 return {'message': 'A placa e o motorista da viagem são obrigatórios'}, 400
 
-            if data_viagem is None or valor is None:
+            if not data_viagem or not valor:
                 return {'message': 'O valor e a data da viagem são obrigatórios'}, 400
 
-            if origem is None or destino is None:
+            if not origem or not destino:
                 return {'message': 'A origem e destino da viagem são obrigatórios'}, 400
 
             cpf_user = get_jwt_identity()
@@ -112,28 +112,28 @@ def use_viagem_controller(api: Api):
             old_viagem = get_viagem(id)
             cpf_usuario = old_viagem['cpf_usuario']
 
-            if origem is None:
+            if not origem:
                 origem = old_viagem['origem']
 
-            if destino is None:
+            if not destino:
                 destino = old_viagem['destino']
 
-            if data_viagem is None:
+            if not data_viagem:
                 data_viagem = old_viagem['data_viagem']
 
-            if valor is None:
+            if not valor:
                 valor = old_viagem['valor']
 
-            if cpf_motorista is None:
+            if not cpf_motorista:
                 cpf_motorista = old_viagem['cpf_motorista']
 
-            if carga is None:
+            if not carga:
                 carga = old_viagem['carga']
 
-            if nf is None:
+            if not nf:
                 nf = old_viagem['nf']
 
-            if despesa is None:
+            if not despesa:
                 despesa = old_viagem['despesa']
 
             sucesso = update_viagem(id=id, origem=origem, destino=destino, valor=valor, NF=nf, data_viagem=data_viagem,

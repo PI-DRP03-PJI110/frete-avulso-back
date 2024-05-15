@@ -1,4 +1,3 @@
-
 from flask_restx import Api, Resource, fields
 from flask_jwt_extended import jwt_required
 
@@ -41,7 +40,7 @@ def use_user_controller(api: Api):
             funcao = api.payload.get('funcao', None)
             senha = api.payload.get('senha', None)
 
-            if nome is None or cpf is None or senha is None:
+            if not nome or not cpf or not senha:
                 return {'message': 'O cpf, nome de usuário e senha são obrigatórios'}, 400
 
             senha = hash_password(senha)
@@ -75,23 +74,22 @@ def use_user_controller(api: Api):
             senha = api.payload.get('senha', None)
 
             old_user = get_user(cpf)
-            if nome is None:
+            if not nome:
                 nome = old_user['nome']
 
-            if email is None:
+            if not email:
                 email = old_user['email']
 
-            if funcao is None:
+            if not funcao:
                 funcao = old_user['funcao']
 
-            if endereco is None:
+            if not endereco:
                 endereco = old_user['endereco']
 
-            if senha is not None:
+            if not senha:
                 senha = hash_password(senha)
             else:
                 senha = old_user['senha']
-
 
             sucesso = update_user(cpf=cpf, nome=nome, funcao=funcao, endereco=endereco, senha=senha, email=email)
 
