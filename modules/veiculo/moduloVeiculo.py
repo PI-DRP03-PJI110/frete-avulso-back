@@ -34,7 +34,7 @@ def use_veiculo_controller(api: Api):
             descricao = api.payload.get('descricao', None)
             cpf_motorista = api.payload.get('cpf_motorista', None)
 
-            if placa is None or descricao is None:
+            if not placa or not descricao or not placa:
                 return {'message': 'A placa e a descrição do veículo são obrigatórios'}, 400
 
             novo_veiculo = add_veiculo(placa=placa, descricao=descricao, cpf_motorista=cpf_motorista)
@@ -64,10 +64,10 @@ def use_veiculo_controller(api: Api):
 
             old_veiculo = get_veiculo(placa)
 
-            if descricao is None:
+            if not descricao:
                 descricao = old_veiculo['descricao']
 
-            if cpf_motorista is None:
+            if not cpf_motorista:
                 cpf_motorista = old_veiculo['cpf_motorista']
 
             sucesso = update_veiculo(placa=placa, descricao=descricao, cpf_motorista=cpf_motorista)

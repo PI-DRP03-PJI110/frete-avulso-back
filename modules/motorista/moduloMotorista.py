@@ -32,7 +32,7 @@ def use_motorista_controller(api: Api):
             cpf = api.payload.get('cpf', None)
             nome = api.payload.get('nome', None)
 
-            if nome is None or cpf is None:
+            if not nome or not cpf or not nome:
                 return {'message': 'O cpf e o nome do motorista são obrigatórios'}, 400
 
             novo_motorista = add_motorista(cpf=cpf, nome=nome)
