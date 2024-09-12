@@ -11,6 +11,7 @@ from modules.login.moduloLogin import use_login_controller
 from modules.motorista.moduloMotorista import use_motorista_controller
 from modules.veiculo.moduloVeiculo import use_veiculo_controller
 from modules.viagem.moduloViagem import use_viagem_controller
+from modules.despesa.moduloDespesa import use_Despesas_controller
 
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = 'PI-DRP03-PJI110'  # Mantenha isso seguro na produção
@@ -52,7 +53,7 @@ use_user_controller(api)
 use_motorista_controller(api)
 use_veiculo_controller(api)
 use_viagem_controller(api)
-
+use_Despesas_controller(api)
 
 def run():
     from waitress import serve
