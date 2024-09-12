@@ -7,7 +7,3 @@ image: gitpod/workspace-python-3.12
 
 tasks:
   - command: python --version
-
-vscode:
-    extensions:
-        - https://open-vsx.org/api/cweijan/git-graph-pro/1.1.1/file/cweijan.git-graph-pro-1.1.1.vsix
