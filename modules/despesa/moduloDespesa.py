@@ -5,7 +5,7 @@ import simplejson as json
 from flask_restx import Api, Resource, fields, marshal
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-from modules.Despesa.dao import get_Despesa, add_Despesa, get_all_Despesa, excluir_Despesa_de_viagem
+from modules.despesa.dao import get_despesa, add_despesa, get_all_despesa, excluir_despesa_de_viagem
 
 
 class Encoder(json.JSONEncoder):
@@ -20,7 +20,7 @@ class Encoder(json.JSONEncoder):
 def use_Despesas_controller(api: Api):
     auth_schema = {'jwt': {'type': 'apiKey', 'in': 'header', 'name': 'Authorization'}}
     module = api.namespace('Despesa', authorizations=auth_schema)
-    Despesas_model = api.model('Despesa', {
+    Despesa_model = api.model('Despesa', {
         'id': fields.Integer(required=False),
         'Despesa_de-viagem': fields.String(required=False),
         'valor': fields.Fixed(decimals=2),

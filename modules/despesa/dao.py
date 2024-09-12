@@ -77,7 +77,7 @@ def add_despesa(ID, despesa_de_viagem, valor):
         if 'db' in locals() and db is not None:
             db.close()
 
-def excluir_Despesa_de_viagem(id):
+def excluir_despesa_de_viagem(id):
     try:
         db = get_connection()
         cursor = db.cursor(dictionary=True)
