@@ -9,7 +9,7 @@ def get_all_despesa():
         cursor = db.cursor(dictionary=True)
         
         # Exibir todos os registros da tabela "Despesas"
-        cursor.execute("SELECT ID_Despesa as ID, Despesa_de_viagem, valor FROM Despesa")
+        cursor.execute("SELECT ID_despesa as ID, descricao, valor, viagem, FROM despesa")
         return cursor.fetchall()
     
     except Exception as e:
@@ -33,7 +33,7 @@ def get_despesa(ID_viagem: str):
         cursor = db.cursor(dictionary=True)
         
         # Buscar despesas por ID da viagem
-        cursor.execute("SELECT ID_Despesa as ID, Despesa_de_viagem, valor FROM Despesa WHERE ID_viagem = %s", (ID_viagem,))
+        cursor.execute("SELECT ID_despesa as ID, descricao, valor FROM despesa WHERE ID_viagem = %s", (ID_viagem,))
         return cursor.fetchone()
     
     except Exception as e:
@@ -47,11 +47,11 @@ def get_despesa(ID_viagem: str):
         if 'db' in locals() and db is not None:
             db.close()
 
-def add_despesa(ID, despesa_de_viagem, valor):
+def add_despesa(ID_despesa, descricao, valor, viagem):
     """
     Função para adicionar uma nova despesa ao banco de dados.
     :param ID: Identificador da despesa
-    :param despesa_de_viagem: Descrição da despesa
+    :param descricao: Descrição da despesa
     :param valor: Valor da despesa
     """
     try:
@@ -60,8 +60,8 @@ def add_despesa(ID, despesa_de_viagem, valor):
         
         # Inserir uma nova despesa na tabela "Despesas"
         cursor.execute(
-            "INSERT INTO Despesa (ID, Despesa_de_viagem, valor) VALUES (%s, %s, %s)",
-            (ID, despesa_de_viagem, valor)
+            "INSERT INTO despesa (ID_despesa, descricao, valor, viagem) VALUES (%s, %s, %s)",
+            (ID_despesa, descricao, valor, viagem)
         )
         db.commit()
         return True
@@ -83,7 +83,7 @@ def excluir_despesa_de_viagem(id):
         cursor = db.cursor(dictionary=True)
 
         # Atualize o registro no banco de dados
-        cursor.execute("DELETE FROM Despesa  WHERE ID_Despesa_de_viagem = %s ", (id,))
+        cursor.execute("DELETE FROM despesa  WHERE descricao = %s ", (id,))
         db.commit()
         return True
 
