@@ -1,7 +1,7 @@
 import os
 import mysql.connector
 
-conn_host = "DB_Host"
+conn_host = "DB_HOST"
 conn_user = "DB_USER"
 conn_password = "DB_PASS"
 conn_database = "DB_DATABASE"
