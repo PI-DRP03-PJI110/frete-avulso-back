@@ -5,7 +5,7 @@ import simplejson as json
 from flask_restx import Api, Resource, fields, marshal
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-from modules.despesa.dao import get_despesa, add_despesa, get_all_despesa, excluir_despesa_de_viagem
+from modules.despesa.dao import get_despesa, add_despesa, get_all_despesa, update_despesa, excluir_despesa_de_viagem
 
 
 class Encoder(json.JSONEncoder):
@@ -24,7 +24,7 @@ def use_Despesas_controller(api: Api):
         'ID_despesa': fields.Integer(required=False),
         'descricao': fields.String(required=False),
         'valor': fields.Fixed(decimals=2),
-        'viagem': fields.Integer(required=False)
+        'ID_viagem': fields.Integer(required=False)
     })
 
     # Endpoint para login e geração de token
@@ -34,38 +34,44 @@ def use_Despesas_controller(api: Api):
         @jwt_required(locations=['headers'])
         @module.doc(security='jwt')
         def get(self):
-            Despesa = get_all_Despesa()
-            if Despesa is None:
+            despesa = get_all_despesa()
+            if despesa is None:
                 return None, 500
 
-            return json.loads(json.dumps(Despesa, cls=Encoder, use_decimal=True)), 200
+            return json.loads(json.dumps(despesa, cls=Encoder, use_decimal=True)), 200
 
         @jwt_required(locations=['headers'])
         @module.doc(security='jwt')
         @module.expect(Despesa_model)
         def post(self):
-            ID_despesa = api.payload.get('ID_despesa', None)
             descricao = api.payload.get('descricao', None)
             valor = api.payload.get('valor', None)
-            viagem = api.payload.get('viagem',None)
-            if not ID_despesa or not Despesa:
-                return {'message': 'o ID e a Despesa são obrigatórios'}, 400
+            ID_viagem = api.payload.get('ID_viagem', None)
+
+            if not ID_viagem:
+                return {'message': 'O id da viagem é obrigatório'}, 400
+
+            if not valor or valor < 1:
+                return {'message': 'O valor da despesa é obrigatório'}, 400
+
+            if not descricao or len(descricao) == 0:
+                return {'message': 'A descrição da despesa é obrigatório'}, 400
 
             cpf_user = get_jwt_identity()
 
-            nova_Despesa = add_Despesa(descricao=descricao, valor=valor)
+            nova_despesa = add_despesa(descricao=descricao, valor=valor, viagem=ID_viagem)
 
-            if nova_Despesa is None:
+            if nova_despesa is None:
                 return None, 500
 
-            return nova_Despesa, 201
+            return nova_despesa, 201
 
     @module.route('/<int:id>')
     class DespesaOnly(Resource):
         @jwt_required(locations=['headers'])
         @module.doc(security='jwt')
         def get(self, id):
-            Despesa = get_Despesa(id)
+            Despesa = get_despesa(id)
             if Despesa is None:
                 return None, 400
 
@@ -78,18 +84,20 @@ def use_Despesas_controller(api: Api):
             ID_despesa = api.payload.get('ID_despesa', None)
             descricao = api.payload.get('descricao', None)
             valor = api.payload.get('valor', None)
-            viagem = api.payload.get('viagem',None)
+            viagem = api.payload.get('ID_viagem',None)
 
-            old_Despesa = get_Despesa(id)
-            cpf_usuario = old_Despesa['cpf_usuario']
+            old_Despesa = get_despesa(id)
 
-            if not Despesa:
-                Despesa = old_Despesa['despesa']
+            if not descricao:
+                descricao = old_Despesa['descricao']
 
             if not valor:
-                valor = old_valor['valor']
+                valor = old_Despesa['valor']
 
-            sucesso = update_Despesa(ID_despesa=ID_despesa, descricao=descricao, valor=valor, viagem=viagem,)
+            if not viagem:
+                viagem = old_Despesa['ID_viagem']
+
+            sucesso = update_despesa(id=ID_despesa, descricao=descricao, valor=valor, viagem=viagem,)
 
             if sucesso is False:
                 return None, 500
@@ -100,7 +108,7 @@ def use_Despesas_controller(api: Api):
         @module.doc(security='jwt')
         def delete(self, id):
 
-            sucesso = excluir_Despesa_de_viagem(ID_despesa=ID_despesa)
+            sucesso = excluir_despesa_de_viagem(id)
 
             if sucesso is False:
                 return None, 500

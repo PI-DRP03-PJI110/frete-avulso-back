@@ -6,6 +6,7 @@ from flask_restx import Api, Resource, fields, marshal
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from modules.viagem.dao import get_viagem, add_viagem, update_viagem, get_all_viagens, excluir_viagem
+from modules.despesa.dao import get_all_despesas_from_viagem
 
 
 class Encoder(json.JSONEncoder):
@@ -85,6 +86,19 @@ def use_viagem_controller(api: Api):
                 return None, 500
 
             return nova_viagem, 201
+
+    @module.route('/<int:id>/despesas')
+    class DespesasOfViagem(Resource):
+        @jwt_required(locations=['headers'])
+        @module.doc(security='jwt')
+        def get(self, id):
+            despesas = get_all_despesas_from_viagem(id)
+            if despesas is None:
+                return None, 400
+
+            return json.loads(json.dumps(despesas, cls=Encoder, use_decimal=True)), 200
+
+
 
     @module.route('/<int:id>')
     class ViagemOnly(Resource):
