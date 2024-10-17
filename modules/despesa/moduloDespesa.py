@@ -51,7 +51,7 @@ def use_Despesas_controller(api: Api):
             if not ID_viagem:
                 return {'message': 'O id da viagem é obrigatório'}, 400
 
-            if not valor or valor < 1:
+            if not valor:
                 return {'message': 'O valor da despesa é obrigatório'}, 400
 
             if not descricao or len(descricao) == 0:
