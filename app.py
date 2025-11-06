@@ -15,7 +15,7 @@ from modules.despesa.moduloDespesa import use_Despesas_controller
 from modules.auth.moduloAuth import use_auth_controller
 
 app = Flask(__name__)
-app.config['JWT_SECRET_KEY'] = 'PI-DRP03-PJI110'  # Mantenha isso seguro na produção
+app.config['JWT_SECRET_KEY'] = 'PI-DRP03-PJI110'
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
 CORS(app)
