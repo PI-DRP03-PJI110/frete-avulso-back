@@ -1,23 +1,20 @@
+# database.py
 import os
+from dotenv import load_dotenv
 import mysql.connector
 
-conn_host = "DB_HOST"
-conn_user = "DB_USER"
-conn_password = "DB_PASS"
-conn_database = "DB_DATABASE"
+load_dotenv()  # carrega .env
 
+VARS = ("DB_HOST","DB_USER","DB_PASS","DB_DATABASE")
 
 def get_connection():
-    host = os.environ[conn_host]
-    user = os.environ[conn_user]
-    password = os.environ[conn_password]
-    database = os.environ[conn_database]
-
-    # Configurações do banco de dados
-    db = mysql.connector.connect(
-        host=host,
-        user=user,
-        password=password,
-        database=database
+    missing = [k for k in VARS if not os.getenv(k)]
+    if missing:
+        raise RuntimeError(f"Variáveis ausentes: {', '.join(missing)}")
+    return mysql.connector.connect(
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASS"),
+        database=os.getenv("DB_DATABASE"),
+        connection_timeout=10,
     )
-    return db
