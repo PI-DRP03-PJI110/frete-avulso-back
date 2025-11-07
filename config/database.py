@@ -1,8 +1,5 @@
 import os
-from dotenv import load_dotenv
 import mysql.connector
-
-load_dotenv()
 
 VARS = ("DB_HOST","DB_USER","DB_PASS","DB_DATABASE")
 
