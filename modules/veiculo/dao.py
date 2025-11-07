@@ -5,7 +5,6 @@ def get_all_veiculos():
     try:
         db = get_connection()
         cursor = db.cursor(dictionary=True)
-        # Exibir todos os registros do banco de dados
 
         cursor.execute("SELECT placa, ID_veiculo as descricao, CPF_moto as cpf_motorista FROM veiculo")
         return cursor.fetchall()
@@ -13,7 +12,6 @@ def get_all_veiculos():
         print(e)
         return None
     finally:
-        # Fechar o cursor e a conexão de forma segura
         if 'cursor' in locals() and cursor is not None:
             cursor.close()
         if 'db' in locals() and db is not None:
@@ -24,7 +22,6 @@ def get_veiculo(placa: str):
     try:
         db = get_connection()
         cursor = db.cursor(dictionary=True)
-        # Exibir todos os registros do banco de dados
         cursor.execute("SELECT placa, ID_veiculo as descricao, CPF_moto as cpf_motorista FROM veiculo WHERE placa = %s",
                        (placa,))
         return cursor.fetchone()
@@ -32,7 +29,6 @@ def get_veiculo(placa: str):
         print(e)
         return None
     finally:
-        # Fechar o cursor e a conexão de forma segura
         if 'cursor' in locals() and cursor is not None:
             cursor.close()
         if 'db' in locals() and db is not None:
@@ -57,7 +53,6 @@ def add_veiculo(placa, descricao, cpf_motorista: None):
         return False
 
     finally:
-        # Fechar o cursor e a conexão de forma segura
         if 'cursor' in locals() and cursor is not None:
             cursor.close()
         if 'db' in locals() and db is not None:
@@ -69,7 +64,6 @@ def update_veiculo(placa, descricao, cpf_motorista: None):
         db = get_connection()
         cursor = db.cursor(dictionary=True)
 
-        # Atualize o registro no banco de dados
         cursor.execute("UPDATE veiculo SET ID_veiculo = %s, CPF_moto = %s WHERE placa = %s",
                        (descricao, cpf_motorista, placa))
         db.commit()
@@ -80,7 +74,6 @@ def update_veiculo(placa, descricao, cpf_motorista: None):
         return False
 
     finally:
-        # Fechar o cursor e a conexão de forma segura
         if 'cursor' in locals() and cursor is not None:
             cursor.close()
         if 'db' in locals() and db is not None:

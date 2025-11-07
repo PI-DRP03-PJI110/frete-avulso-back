@@ -36,7 +36,6 @@ def use_viagem_controller(api: Api):
         'cpf_user': fields.String(required=True),
     })
 
-    # Endpoint para login e geração de token
     @module.route('')
     class Viagem(Resource):
 

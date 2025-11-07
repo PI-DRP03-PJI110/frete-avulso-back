@@ -7,7 +7,6 @@ def get_all_viagens():
         db = get_connection()
         cursor = db.cursor(dictionary=True)
 
-        # Exibir todos os registros do banco de dados
         cursor.execute(
             "SELECT ID_viagem as id, solicitante, origem, destino, valor, NF as nf, data_viagem, carga, despesa, placa, CPF_moto as cpf_motorista, CPF_user as cpf_usuario FROM viagens")
         return cursor.fetchall()
@@ -15,7 +14,6 @@ def get_all_viagens():
         print(e)
         return None
     finally:
-        # Fechar o cursor e a conexão de forma segura
         if 'cursor' in locals() and cursor is not None:
             cursor.close()
         if 'db' in locals() and db is not None:
@@ -26,8 +24,6 @@ def get_viagem(id: int):
     try:
         db = get_connection()
         cursor = db.cursor(dictionary=True)
-
-        # Exibir todos os registros do banco de dados
         cursor.execute(
             "SELECT ID_viagem as id, solicitante, origem, destino, valor, NF as nf, data_viagem, carga, despesa, placa, CPF_moto as cpf_motorista, CPF_user as cpf_usuario FROM viagens where ID_viagem = %s",
             (id,))
@@ -36,7 +32,6 @@ def get_viagem(id: int):
         print(e)
         return None
     finally:
-        # Fechar o cursor e a conexão de forma segura
         if 'cursor' in locals() and cursor is not None:
             cursor.close()
         if 'db' in locals() and db is not None:
@@ -59,7 +54,6 @@ def add_viagem(solicitante, origem, destino, valor, NF, data_viagem, carga, desp
         print(e)
         return None
     finally:
-        # Fechar o cursor e a conexão de forma segura
         if 'cursor' in locals() and cursor is not None:
             cursor.close()
         if 'db' in locals() and db is not None:
@@ -71,7 +65,6 @@ def update_viagem(id, solicitante, origem, destino, valor, NF, data_viagem, carg
         db = get_connection()
         cursor = db.cursor(dictionary=True)
 
-        # Atualize o registro no banco de dados
         cursor.execute(
             "UPDATE viagens SET solicitante = %s, origem = %s, destino = %s, NF = %s, data_viagem = %s, carga = %s, despesa = %s, placa = %s, CPF_moto = %s, CPF_user = %s, valor = %s WHERE ID_viagem = %s ",
             (solicitante, origem, destino, NF, data_viagem, carga, despesa, placa, cpf_motorista, cpf_usuario, valor, id)
@@ -84,7 +77,6 @@ def update_viagem(id, solicitante, origem, destino, valor, NF, data_viagem, carg
         return False
 
     finally:
-        # Fechar o cursor e a conexão de forma segura
         if 'cursor' in locals() and cursor is not None:
             cursor.close()
         if 'db' in locals() and db is not None:
@@ -95,8 +87,6 @@ def excluir_viagem(id):
     try:
         db = get_connection()
         cursor = db.cursor(dictionary=True)
-
-        # Atualize o registro no banco de dados
         cursor.execute("DELETE FROM viagens  WHERE ID_viagem = %s ", (id,))
         db.commit()
         return True
@@ -106,7 +96,6 @@ def excluir_viagem(id):
         return False
 
     finally:
-        # Fechar o cursor e a conexão de forma segura
         if 'cursor' in locals() and cursor is not None:
             cursor.close()
         if 'db' in locals() and db is not None:

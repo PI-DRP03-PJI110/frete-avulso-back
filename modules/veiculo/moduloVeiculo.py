@@ -13,7 +13,6 @@ def use_veiculo_controller(api: Api):
         'cpf_motorista': fields.String(required=False),
     })
 
-    # Endpoint para login e geração de token
     @module.route('')
     class Veiculo(Resource):
 

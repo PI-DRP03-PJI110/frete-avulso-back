@@ -12,7 +12,6 @@ def use_motorista_controller(api: Api):
         'nome': fields.String(required=True),
     })
 
-    # Endpoint para login e geração de token
     @module.route('')
     class Motorista(Resource):
 

@@ -16,7 +16,6 @@ def use_user_controller(api: Api):
         'senha': fields.String(required=True)
     })
 
-    # Endpoint para login e geração de token
     @module.route('')
     class User(Resource):
 

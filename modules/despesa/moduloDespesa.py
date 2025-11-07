@@ -27,7 +27,6 @@ def use_Despesas_controller(api: Api):
         'ID_viagem': fields.Integer(required=False)
     })
 
-    # Endpoint para login e geração de token
     @module.route('')
     class Despesa(Resource):
 

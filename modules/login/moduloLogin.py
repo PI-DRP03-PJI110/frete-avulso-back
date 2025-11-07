@@ -12,7 +12,6 @@ def use_login_controller(api: Api):
         'senha': fields.String(required=True, description='A senha para login')
     })
 
-    # Endpoint para login e geração de token
     @module.route('')
     class UserLogin(Resource):
 
@@ -31,6 +30,5 @@ def use_login_controller(api: Api):
             if stored_user['senha'] != hash_password(senha):
                 return {'message': 'Credenciais inválidas'}, 401
 
-            # Se as credenciais estiverem corretas, criar e retornar o token de acesso
             access_token = create_access_token(identity=cpf)
             return {'access_token': access_token}, 200
